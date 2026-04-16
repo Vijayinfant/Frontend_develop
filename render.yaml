@@ -4,8 +4,8 @@ services:
     name: fedi-backend
     env: python
     rootDir: backend
-    buildCommand: "pip install -r requirements.txt && python manage.py migrate"
-    startCommand: "gunicorn prompt_library.wsgi:application"
+    buildCommand: "cd backend && pip install -r requirements.txt && python manage.py migrate"
+    startCommand: "cd backend && gunicorn prompt_library.wsgi:application"
     envVars:
       - key: DB_HOST
         value: "your_postgres_host_here"
