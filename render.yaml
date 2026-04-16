@@ -1,4 +1,16 @@
 services:
+  # Database Services
+  - type: redis
+    name: fedi-redis
+    ipAllowList: [] # internal use only
+    plan: free
+
+  - type: psql
+    name: fedi-postgres
+    databaseName: prompt_db
+    user: prompt_user
+    plan: free
+
   # Backend API
   - type: web
     name: fedi-backend
@@ -8,15 +20,26 @@ services:
     startCommand: "cd backend && gunicorn prompt_library.wsgi:application"
     envVars:
       - key: DB_HOST
-        value: "your_postgres_host_here"
+        fromDatabase:
+          name: fedi-postgres
+          property: host
       - key: DB_USER
-        value: "your_postgres_user_here"
+        fromDatabase:
+          name: fedi-postgres
+          property: user
       - key: DB_PASSWORD
-        value: "your_postgres_password_here"
+        fromDatabase:
+          name: fedi-postgres
+          property: password
       - key: DB_NAME
-        value: "your_postgres_db_name_here"
+        fromDatabase:
+          name: fedi-postgres
+          property: database
       - key: REDIS_HOST
-        value: "your_redis_host_here"
+        fromService:
+          name: fedi-redis
+          type: redis
+          property: host
       - key: PYTHON_VERSION
         value: "3.10.12"
       
