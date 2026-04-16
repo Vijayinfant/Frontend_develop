@@ -1,0 +1,29 @@
+services:
+  # Backend API
+  - type: web
+    name: fedi-backend
+    env: python
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate"
+    startCommand: "gunicorn prompt_library.wsgi:application"
+    envVars:
+      - key: DB_HOST
+        value: "your_postgres_host_here"
+      - key: DB_USER
+        value: "your_postgres_user_here"
+      - key: DB_PASSWORD
+        value: "your_postgres_password_here"
+      - key: DB_NAME
+        value: "your_postgres_db_name_here"
+      - key: REDIS_HOST
+        value: "your_redis_host_here"
+      - key: PYTHON_VERSION
+        value: "3.10.12"
+      
+  # Frontend App
+  - type: web
+    name: fedi-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm run start" # Note: For production, using static site hosting is better, but this will work.
