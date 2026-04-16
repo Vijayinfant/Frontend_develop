@@ -9,7 +9,7 @@ import { Prompt } from '../models/prompt.model';
 export class PromptService {
   private apiUrl = window.location.hostname === 'localhost' 
     ? 'http://localhost:8000/api/prompts/' 
-    : '/api/prompts/';
+    : '/_/backend/api/prompts/';
 
   constructor(private http: HttpClient) { }
 
